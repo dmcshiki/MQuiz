@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "514280010439",
+    "project_id": "mquiz-senac",
+    "storage_bucket": "mquiz-senac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:514280010439:android:f335ca9a67d9bff12a84e2",
+        "android_client_info": {
+          "package_name": "com.example.mquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "514280010439-lki52dvi1602efdmh59835dvgq8t6r3d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFDuUeoue4cwm-JQK2eOr7Xy5JDEQL36o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "514280010439-lki52dvi1602efdmh59835dvgq8t6r3d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
