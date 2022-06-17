@@ -40,9 +40,10 @@ class EndGameActivity: AppCompatActivity() {
         }
 
         binding.homeButton.setOnClickListener {
-            this.finish()
+            finish()
         }
     }
+
 
     private fun registerOnLeaderboard(score: String){
         var username = binding.leaderboardRegisterInput.text.toString().trim()

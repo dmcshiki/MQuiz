@@ -27,6 +27,7 @@ var wrongAnswers = 0
 class QuizActivity : AppCompatActivity() {
     private lateinit var actionBar: ActionBar
     private lateinit var binding: ActivityQuizBinding
+    private lateinit var rightAnswer: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +41,10 @@ class QuizActivity : AppCompatActivity() {
         binding = ActivityQuizBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        createQuestion()
+        var question = createQuestion()
 
         binding.skipButton.setOnClickListener {
-            createQuestion()
+            question = createQuestion()
             binding.skipButton.isEnabled = false
             binding.skipButton.isClickable = false
             binding.skipButton.setBackgroundColor(Color.GRAY)
@@ -67,48 +68,40 @@ class QuizActivity : AppCompatActivity() {
                 putExtra(wrongAnswerScore, wrongAnswers.toString())
             }
             startActivity(intent)
-            this.finish()
+            finish()
         }
 
         binding.hintButton.setOnClickListener {
-            binding.answer2.isEnabled = false
-            binding.answer2.isClickable = false
-            binding.answer2.setBackgroundColor(Color.RED)
-            binding.answer2.setTextColor(Color.WHITE)
-
-            binding.answer3.isEnabled = false
-            binding.answer3.isClickable = false
-            binding.answer3.setBackgroundColor(Color.RED)
-            binding.answer3.setTextColor(Color.WHITE)
-
-            binding.hintButton.isEnabled = false
-            binding.hintButton.isClickable = false
-            binding.hintButton.setBackgroundColor(Color.GRAY)
-            binding.hintButton.setTextColor(Color.WHITE)
+            useHint()
         }
 
-        createTimer(this) { this.finish() }
+        createTimer(this)
 
     }
 
-    private fun createQuestion(){
-        val question = generateQuestion()
+    private fun insertQuestions(question: Question){
         val possibleAnswers = listOf(
-                question.result,
-                question.result/2,
-                question.result/4,
-                question.result*2,
-                question.result*4).shuffled()
+            question.result,
+            question.result/2,
+            question.result/4,
+            question.result*2,
+            question.result*4
+        ).shuffled()
 
         val questionStatement: TextView = findViewById<TextView>(R.id.questionLbl)
         questionStatement.text = question.statement()
-        val rightAnswer = question.result.toString()
+        rightAnswer = question.result.toString()
 
         binding.answer1.text = possibleAnswers[0].toString()
         binding.answer2.text = possibleAnswers[1].toString()
         binding.answer3.text = possibleAnswers[2].toString()
         binding.answer4.text = possibleAnswers[3].toString()
         binding.answer5.text = possibleAnswers[4].toString()
+    }
+    private fun createQuestion(){
+        val question = generateQuestion()
+
+        insertQuestions(question)
 
         binding.answer1.setOnClickListener {
             if(binding.answer1.text == question.result.toString()){
@@ -166,7 +159,6 @@ class QuizActivity : AppCompatActivity() {
         }
 
     }
-
     private fun enableButtons(){
         binding.answer1.isEnabled = true
         binding.answer1.isClickable = true
@@ -179,7 +171,6 @@ class QuizActivity : AppCompatActivity() {
         binding.answer5.isEnabled = true
         binding.answer5.isClickable = true
     }
-
     private fun disableButtons(){
         binding.answer1.isEnabled = false
         binding.answer1.isClickable = false
@@ -192,7 +183,7 @@ class QuizActivity : AppCompatActivity() {
         binding.answer5.isEnabled = false
         binding.answer5.isClickable = false
     }
-    private fun createTimer(context: Context, finish: () -> Unit) {
+    private fun createTimer(context: Context) {
         val timeLeft: TextView = findViewById(R.id.timerLbl) as TextView
         var startTime = 90000.toLong()
 
@@ -202,7 +193,6 @@ class QuizActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                print(endScore)
                 intent = Intent(context, EndGameActivity::class.java).apply {
                     putExtra(finalScore, endScore.toString())
                     putExtra(rightAnswerScore, rightAnswers.toString())
@@ -215,7 +205,6 @@ class QuizActivity : AppCompatActivity() {
         timer.start()
 
     }
-
     private fun checkAnswer(question: Question){
 
         disableButtons()
@@ -229,7 +218,74 @@ class QuizActivity : AppCompatActivity() {
 
         Handler(Looper.getMainLooper()).postDelayed(progressRunnable, 1000)
     }
+    private fun useHint(){
+        binding.hintButton.isEnabled = false
+        binding.hintButton.isClickable = false
+        binding.hintButton.setBackgroundColor(Color.GRAY)
+        binding.hintButton.setTextColor(Color.WHITE)
 
+        if(binding.answer1.text != rightAnswer
+            && binding.answer2.text != rightAnswer){
+            binding.answer1.isEnabled = false
+            binding.answer1.isClickable = false
+            binding.answer1.setBackgroundColor(Color.RED)
+            binding.answer1.setTextColor(Color.WHITE)
+            binding.answer2.isEnabled = false
+            binding.answer2.isClickable = false
+            binding.answer2.setBackgroundColor(Color.RED)
+            binding.answer2.setTextColor(Color.WHITE)
+        } else if(binding.answer1.text != rightAnswer
+            && binding.answer3.text != rightAnswer){
+            binding.answer1.isEnabled = false
+            binding.answer1.isClickable = false
+            binding.answer1.setBackgroundColor(Color.RED)
+            binding.answer1.setTextColor(Color.WHITE)
+            binding.answer3.isEnabled = false
+            binding.answer3.isClickable = false
+            binding.answer3.setBackgroundColor(Color.RED)
+            binding.answer3.setTextColor(Color.WHITE)
+        } else if(binding.answer1.text != rightAnswer
+            && binding.answer4.text != rightAnswer){
+            binding.answer1.isEnabled = false
+            binding.answer1.isClickable = false
+            binding.answer1.setBackgroundColor(Color.RED)
+            binding.answer1.setTextColor(Color.WHITE)
+            binding.answer4.isEnabled = false
+            binding.answer4.isClickable = false
+            binding.answer4.setBackgroundColor(Color.RED)
+            binding.answer4.setTextColor(Color.WHITE)
+        } else if(binding.answer2.text != rightAnswer
+            && binding.answer3.text != rightAnswer){
+            binding.answer2.isEnabled = false
+            binding.answer2.isClickable = false
+            binding.answer2.setBackgroundColor(Color.RED)
+            binding.answer2.setTextColor(Color.WHITE)
+            binding.answer3.isEnabled = false
+            binding.answer3.isClickable = false
+            binding.answer3.setBackgroundColor(Color.RED)
+            binding.answer3.setTextColor(Color.WHITE)
+        } else if(binding.answer2.text != rightAnswer
+            && binding.answer4.text != rightAnswer){
+            binding.answer2.isEnabled = false
+            binding.answer2.isClickable = false
+            binding.answer2.setBackgroundColor(Color.RED)
+            binding.answer2.setTextColor(Color.WHITE)
+            binding.answer4.isEnabled = false
+            binding.answer4.isClickable = false
+            binding.answer4.setBackgroundColor(Color.RED)
+            binding.answer4.setTextColor(Color.WHITE)
+        } else if(binding.answer3.text != rightAnswer
+            && binding.answer4.text != rightAnswer){
+            binding.answer3.isEnabled = false
+            binding.answer3.isClickable = false
+            binding.answer3.setBackgroundColor(Color.RED)
+            binding.answer3.setTextColor(Color.WHITE)
+            binding.answer4.isEnabled = false
+            binding.answer4.isClickable = false
+            binding.answer4.setBackgroundColor(Color.RED)
+            binding.answer4.setTextColor(Color.WHITE)
+        }
+    }
     private fun showAnswer(question: Question){
         if(binding.answer1.text == question.result.toString()){
             binding.answer1.setBackgroundColor(Color.GREEN)

@@ -19,8 +19,6 @@ class HowToPlayActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar!!.title = "Como jogar"
         actionBar.setDisplayHomeAsUpEnabled(true)
-    }
-
-
+        }
     }
 

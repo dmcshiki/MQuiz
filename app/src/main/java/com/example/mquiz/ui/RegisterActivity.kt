@@ -71,9 +71,7 @@ class RegisterActivity : AppCompatActivity() {
         }
         else{
             firebaseSignUp()
-
         }
-
     }
 
     private fun firebaseSignUp() {
